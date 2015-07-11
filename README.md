@@ -1,4 +1,5 @@
 [![Build Status][travis-image]][travis-url]
+[![Code Quality][codeclimate-image]][codeclimate-url]
 [![NPM version][npm-version-image]][npm-url]
 [![NPM downloads][npm-downloads-image]][npm-url]
 [![MIT License][license-image]][license-url]
@@ -162,3 +163,6 @@ el.trigger('start', { fuel: 89 }, true)
 
 [coverage-image]:https://img.shields.io/coveralls/riot/observable/master.svg?style=flat-square
 [coverage-url]:https://coveralls.io/r/riot/observable/?branch=master
+
+[codeclimate-image]:https://img.shields.io/codeclimate/github/riot/observable.svg?style=flat-square
+[codeclimate-url]:https://codeclimate.com/github/riot/observable
