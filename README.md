@@ -55,14 +55,6 @@ car.trigger('start')
 @returns the given object `el` or a new observable instance
 
 
-## Installation
-
-### Npm
-
-### Bower
-
-## Api
-
 ### el.on(events, callback) | #observable-on
 
 Listen to the given space separated list of `events` and execute the `callback` each time an event is triggered.
@@ -83,14 +75,6 @@ el.on('start stop', function(type) {
 
 @returns `el`
 
-## Installation
-
-### Npm
-
-### Bower
-
-## Api
-
 ### el.one(event, callback) | #observable-one
 
 Listen to the given `event` and execute the `callback` at most once.
@@ -104,14 +88,6 @@ el.one('start', function() {
 
 @returns `el`
 
-## Installation
-
-### Npm
-
-### Bower
-
-## Api
-
 ### el.off(events) | #observable-off
 
 Removes the given space separated list of event listeners
@@ -121,14 +97,6 @@ el.off('start stop')
 ```
 
 @returns `el`
-
-## Installation
-
-### Npm
-
-### Bower
-
-## Api
 
 ### el.off(events, fn)
 
@@ -147,28 +115,12 @@ el.off('start end', doIt)
 
 @returns `el`
 
-## Installation
-
-### Npm
-
-### Bower
-
-## Api
-
 ### el.off('*')
 
 Removes all listeners from all event types.
 
 @returns `el`
 
-
-## Installation
-
-### Npm
-
-### Bower
-
-## Api
 
 ### el.trigger(event) | #observable-trigger
 
@@ -179,14 +131,6 @@ el.trigger('start')
 ```
 
 @returns `el`
-
-## Installation
-
-### Npm
-
-### Bower
-
-## Api
 
 ### el.trigger(event, arg1 ... argN)
 
