@@ -66,7 +66,8 @@ var observable = function(el) {
 
   return el
 
-}  // support CommonJS, AMD & browser
+}  /* istanbul ignore next */
+  // support CommonJS, AMD & browser
   if (typeof exports === 'object')
     module.exports = observable
   else if (typeof define === 'function' && define.amd)

@@ -1,3 +1,4 @@
+  /* istanbul ignore next */
   // support CommonJS, AMD & browser
   if (typeof exports === 'object')
     module.exports = observable
