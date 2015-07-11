@@ -25,7 +25,7 @@ Not available yet
 
 ### Bower
 
-Not available yet
+`$ bower install riot-observable --save`
 
 ## Api
 
