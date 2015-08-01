@@ -27,7 +27,7 @@
     "karma-mocha": "^0.2.0",
     "karma-phantomjs-launcher": "^0.2.0"
   },
-  "author": "Gianluca Guarini <gianluca.guarini@gmail.com> (http://gianlucaguarini.com/)",
+  "author": "Muut, Inc. and other contributors",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/riot/observable/issues"
