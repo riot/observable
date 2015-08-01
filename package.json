@@ -1,6 +1,6 @@
 {
   "name": "riot-observable",
-  "version": "0.0.1-beta",
+  "version": "2.0.0-beta",
   "description": "Simple script to send and receive events",
   "main": "index.js",
   "directories": {
@@ -19,10 +19,10 @@
     "events"
   ],
   "devDependencies": {
-    "coveralls": "^2.11.2",
-    "eslint": "^0.24.1",
+    "coveralls": "^2.11.3",
+    "eslint": "^1.0.0",
     "expect.js": "^0.3.1",
-    "karma": "^0.12.37",
+    "karma": "^0.13.3",
     "karma-coverage": "^0.4.2",
     "karma-mocha": "^0.2.0",
     "karma-phantomjs-launcher": "^0.2.0"
