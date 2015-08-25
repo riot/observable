@@ -8,10 +8,11 @@
   el = el || {}
 
   /**
-   * private variables
+   * Private variables and methods
    */
 
-  var callbacks = {}
+  var callbacks = {},
+    onEachEvent = function(e, fn) { e.replace(/\S+/g, fn) }
 
   /**
    * Listen to the given space separated list of `events` and execute the `callback` each time an event is triggered.
@@ -23,7 +24,7 @@
   el.on = function(events, fn) {
     if (typeof fn != 'function')  return el
 
-    events.replace(/\S+/g, function(name, pos) {
+    onEachEvent(events, function(name, pos) {
       (callbacks[name] = callbacks[name] || []).push(fn)
       fn.typed = pos > 0
     })
@@ -41,7 +42,7 @@
   el.off = function(events, fn) {
     if (events == '*') callbacks = {}
     else {
-      events.replace(/\S+/g, function(name) {
+      onEachEvent(events, function(name) {
         if (fn) {
           var arr = callbacks[name]
           for (var i = 0, cb; cb = arr && arr[i]; ++i) {
@@ -77,7 +78,7 @@
   el.trigger = function(events) {
     var args = [].slice.call(arguments, 1)
 
-    events.replace(/\S+/g, function(name) {
+    onEachEvent(events, function(name) {
 
       var fns = callbacks[name] || []
 
