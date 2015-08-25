@@ -210,7 +210,7 @@ describe('Core specs', function() {
     el.on('aa', fn).on('aa', fn).on('bb', fn)
     el.off('*')
 
-    el.trigger('aa').trigger('bb')
+    el.trigger('aa bb')
 
     expect(counter).to.be(0)
 
@@ -249,8 +249,20 @@ describe('Core specs', function() {
 
     el.on('foo', fn).on('bar', fn)
     el.off('foo bar', fn)
-    el.trigger('foo').trigger('bar')
+    el.trigger('foo bar')
     expect(counter).to.be(0)
+  })
+
+  it('multi trigger', function() {
+    var fn = function(val) {
+      counter ++
+      expect(val).to.be(true)
+    }
+
+    el.on('foo', fn).on('bar', fn)
+    el.trigger('foo bar', true)
+
+    expect(counter).to.be(2)
   })
 
   it('remove handler while triggering', function() {

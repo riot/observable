@@ -2,6 +2,10 @@ engines:
   eslint:
     enabled: true
 
+exclude_paths:
+  - "dist/*.js"
+
 ratings:
   paths:
   - "lib/index.js"
+

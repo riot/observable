@@ -1,4 +1,4 @@
-var observable = function(el) {
+riot.observable = function(el) {
 
   /**
    * Extend the original object or create a new empty one

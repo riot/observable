@@ -5,8 +5,11 @@ ESLINT = ./node_modules/eslint/bin/eslint.js
 MOCHA = ./node_modules/mocha/bin/_mocha
 COVERALLS = ./node_modules/coveralls/bin/coveralls.js
 
+
 build:
-	@ cat lib/wrap/start.frag lib/index.js lib/wrap/end.frag > index.js
+	@ mkdir -p dist
+	@ cat lib/wrap/start.frag lib/index.js lib/wrap/end.frag > dist/observable.js
+	@ cat lib/index.js | sed -e 's/var observable/riot.observable/g' > dist/riot.observable.js
 
 test: eslint test-karma
 

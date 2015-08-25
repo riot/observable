@@ -1,8 +1,8 @@
 {
   "name": "riot-observable",
-  "version": "2.0.0-beta",
+  "version": "2.0.0-beta.2",
   "description": "Simple script to send and receive events",
-  "main": "index.js",
+  "main": "dist/observable.js",
   "directories": {
     "lib": "lib"
   },
