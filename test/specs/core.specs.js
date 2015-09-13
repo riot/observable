@@ -287,5 +287,19 @@ describe('Core specs', function() {
 
   })
 
+  it('Do not block callback throwing errors', function(done) {
+
+    el.on('event', function() { counter++; throw 'OH NOES!' })
+    el.on('event', function() { counter++ })
+
+    el.trigger('event')
+
+    setTimeout(function() {
+      el.trigger('event')
+      expect(counter).to.be(4)
+      done()
+    }, 1000)
+  })
+
 })
 

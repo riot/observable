@@ -85,8 +85,11 @@ riot.observable = function(el) {
       for (var i = 0, fn; fn = fns[i]; ++i) {
         if (fn.busy) return
         fn.busy = 1
-        fn.apply(el, fn.typed ? [name].concat(args) : args)
-        if (fns[i] !== fn) i--
+        // avoid that this fn.busy gets stuck in case of errors it fixes #3
+        try {
+          fn.apply(el, fn.typed ? [name].concat(args) : args)
+        } catch (e) { /* error */}
+        if (fns[i] !== fn) { i-- }
         fn.busy = 0
       }
 
