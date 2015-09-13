@@ -80,7 +80,7 @@
 
     onEachEvent(events, function(name) {
 
-      var fns = callbacks[name] || []
+      var fns = (callbacks[name] || []).slice(0)
 
       for (var i = 0, fn; fn = fns[i]; ++i) {
         if (fn.busy) return

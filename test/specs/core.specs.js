@@ -138,7 +138,7 @@ describe('Core specs', function() {
     var e2 = false
 
     el.on('e1', function() { this.trigger('e2') })
-    el.on('e1', function() { e2 = true })
+    el.on('e2', function() { e2 = true })
 
     el.trigger('e1')
 
@@ -299,6 +299,19 @@ describe('Core specs', function() {
       expect(counter).to.be(4)
       done()
     }, 1000)
+  })
+
+  it('The one event is called once also in a recursive function', function() {
+    el.one('event', function() {
+      counter ++
+      el.one('event', function() {
+        counter ++
+      })
+    })
+    el.trigger('event')
+    expect(counter).to.be(1)
+    el.trigger('event')
+    expect(counter).to.be(2)
   })
 
 })
