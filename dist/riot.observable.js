@@ -1,4 +1,4 @@
-riot.observable = function(el) {
+riot.observable = function(el, options) {
 
   /**
    * Extend the original object or create a new empty one
@@ -8,11 +8,27 @@ riot.observable = function(el) {
   el = el || {}
 
   /**
+   * Initialize options if needed
+   * @type { Object }
+   */
+  options = options || {}
+
+  /**
    * Private variables and methods
    */
 
   var callbacks = {},
-    onEachEvent = function(e, fn) { e.replace(/\S+/g, fn) }
+    onEachEvent = function(e, fn) { e.replace(/\S+/g, fn) },
+    defineProperty = function (key, value) {
+      if (options.nonEnumerable) {
+        Object.defineProperty(el, key, {
+          value: value,
+          enumerable: false
+        })
+      } else {
+        el[key] = value
+      }
+    }
 
   /**
    * Listen to the given space separated list of `events` and execute the `callback` each time an event is triggered.
@@ -21,7 +37,7 @@ riot.observable = function(el) {
    * @returns { Object } el
    */
 
-  el.on = function(events, fn) {
+  defineProperty('on', function(events, fn) {
     if (typeof fn != 'function')  return el
 
     onEachEvent(events, function(name, pos) {
@@ -30,7 +46,7 @@ riot.observable = function(el) {
     })
 
     return el
-  }
+  })
 
   /**
    * Removes the given space separated list of `events` listeners
@@ -39,7 +55,7 @@ riot.observable = function(el) {
    * @returns { Object } el
    */
 
-  el.off = function(events, fn) {
+  defineProperty('off', function(events, fn) {
     if (events == '*') callbacks = {}
     else {
       onEachEvent(events, function(name) {
@@ -52,7 +68,7 @@ riot.observable = function(el) {
       })
     }
     return el
-  }
+  })
 
   /**
    * Listen to the given space separated list of `events` and execute the `callback` at most once
@@ -61,13 +77,13 @@ riot.observable = function(el) {
    * @returns { Object } el
    */
 
-  el.one = function(events, fn) {
+  defineProperty('one', function(events, fn) {
     function on() {
       el.off(events, on)
       fn.apply(el, arguments)
     }
     return el.on(events, on)
-  }
+  })
 
   /**
    * Execute all callback functions that listen to the given space separated list of `events`
@@ -75,7 +91,7 @@ riot.observable = function(el) {
    * @returns { Object } el
    */
 
-  el.trigger = function(events) {
+  defineProperty('trigger', function(events) {
     var args = [].slice.call(arguments, 1)
 
     onEachEvent(events, function(name) {
@@ -99,7 +115,7 @@ riot.observable = function(el) {
     })
 
     return el
-  }
+  })
 
   return el
 

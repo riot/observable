@@ -1,3 +1,15 @@
+/*
+ * Equivalent to Object.propertyIsEnumerable
+ */
+function hasEnumerableProperty(object, key) {
+  for (var k in object) {
+    if (key === k) {
+      return true
+    }
+  }
+  return false
+}
+
 describe('Core specs', function() {
   var el = observable(),
       counter = 0
@@ -8,6 +20,19 @@ describe('Core specs', function() {
 
   afterEach(function() {
     el.off('*')
+  })
+
+  it('set enumerable property by default', function () {
+
+    expect(hasEnumerableProperty(el, 'on')).to.be(true)
+
+  })
+
+  it('set non-enumerable property when option passed', function () {
+
+    el = observable(null, {nonEnumerable: true})
+    expect(hasEnumerableProperty(el, 'on')).to.be(false)
+
   })
 
   it('single listener', function() {
