@@ -1,4 +1,4 @@
-;(function(window, undefined) {var observable = function(el, options) {
+;(function(window, undefined) {var observable = function(el) {
 
   /**
    * Extend the original object or create a new empty one
@@ -8,26 +8,18 @@
   el = el || {}
 
   /**
-   * Initialize options if needed
-   * @type { Object }
-   */
-  options = options || {}
-
-  /**
    * Private variables and methods
    */
 
   var callbacks = {},
     onEachEvent = function(e, fn) { e.replace(/\S+/g, fn) },
     defineProperty = function (key, value) {
-      if (options.nonEnumerable) {
-        Object.defineProperty(el, key, {
-          value: value,
-          enumerable: false
-        })
-      } else {
-        el[key] = value
-      }
+      Object.defineProperty(el, key, {
+        value: value,
+        enumerable: false,
+        writable: false,
+        configurable: false
+      })
     }
 
   /**

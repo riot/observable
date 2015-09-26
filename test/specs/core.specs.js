@@ -22,18 +22,41 @@ describe('Core specs', function() {
     el.off('*')
   })
 
-  it('set enumerable property by default', function () {
+  it('public methods should not be enumerable', function () {
 
-    expect(hasEnumerableProperty(el, 'on')).to.be(true)
-
-  })
-
-  it('set non-enumerable property when option passed', function () {
-
-    el = observable(null, {nonEnumerable: true})
     expect(hasEnumerableProperty(el, 'on')).to.be(false)
+    expect(hasEnumerableProperty(el, 'one')).to.be(false)
+    expect(hasEnumerableProperty(el, 'trigger')).to.be(false)
+    expect(hasEnumerableProperty(el, 'off')).to.be(false)
 
   })
+
+  it('public methods can not be configurable', function () {
+
+    delete el.on
+    expect(el.on).to.not.be(undefined)
+    delete el.one
+    expect(el.one).to.not.be(undefined)
+    delete el.trigger
+    expect(el.trigger).to.not.be(undefined)
+    delete el.off
+    expect(el.off).to.not.be(undefined)
+
+  })
+
+  it('public methods can not be overriden', function () {
+
+    el.on = 'foo'
+    expect(el.on).to.not.be('foo')
+    el.one = 'foo'
+    expect(el.one).to.not.be('foo')
+    el.trigger = 'foo'
+    expect(el.trigger).to.not.be('foo')
+    el.off = 'foo'
+    expect(el.off).to.not.be('foo')
+
+  })
+
 
   it('single listener', function() {
 
