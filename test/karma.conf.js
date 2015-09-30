@@ -18,7 +18,7 @@ module.exports = function(config) {
 
     browsers: ['PhantomJS'],
 
-    reporters: ['progress', 'saucelabs', 'coverage'],
+    reporters: ['progress', 'coverage'],
     preprocessors: {
       '../index.js': ['coverage']
     },
