@@ -20,9 +20,9 @@
   ],
   "devDependencies": {
     "coveralls": "^2.11.4",
-    "eslint": "^1.4.1",
+    "eslint": "^1.5.1",
     "expect.js": "^0.3.1",
-    "karma": "^0.13.9",
+    "karma": "^0.13.10",
     "karma-coverage": "^0.5.2",
     "karma-mocha": "^0.2.0",
     "karma-phantomjs-launcher": "^0.2.1",
