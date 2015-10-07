@@ -106,9 +106,16 @@
       var fns = (callbacks[name] || []).slice(0)
 
       for (var i = 0, fn; fn = fns[i]; ++i) {
-
-        fn.apply(el, fn.typed ? [name].concat(args) : args)
-
+        if (fn.busy) return
+        fn.busy = 1
+        // avoid that this fn.busy gets stuck in case of errors it fixes #3
+        // TODO: try/catch should be removed
+        // https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#2-unsupported-syntax
+        try {
+          fn.apply(el, fn.typed ? [name].concat(args) : args)
+        } catch (e) { /* error */}
+        if (fns[i] !== fn) { i-- }
+        fn.busy = 0
       }
 
       if (callbacks.all && name != 'all')
