@@ -72,7 +72,16 @@ riot.observable = function(el) {
   defineProperty('one', function(events, fn) {
     function on() {
       el.off(events, on)
-      fn.apply(el, arguments)
+
+      // V8 performance optimization
+      // https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments
+      var arglen = arguments.length
+      var args = new Array(arglen)
+      for (var i = 0; i < arglen; i++) {
+        args[i] = arguments[i]
+      }
+
+      fn.apply(el, args)
     }
     return el.on(events, on)
   })
@@ -84,21 +93,22 @@ riot.observable = function(el) {
    */
 
   defineProperty('trigger', function(events) {
-    var args = [].slice.call(arguments, 1)
+    // V8 performance optimization
+    // https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments
+    var arglen = arguments.length - 1
+    var args = new Array(arglen)
+    for (var i = 0; i < arglen; i++) {
+      args[i] = arguments[i + 1] // skip first argument
+    }
 
     onEachEvent(events, function(name) {
 
       var fns = (callbacks[name] || []).slice(0)
 
       for (var i = 0, fn; fn = fns[i]; ++i) {
-        if (fn.busy) return
-        fn.busy = 1
-        // avoid that this fn.busy gets stuck in case of errors it fixes #3
-        try {
-          fn.apply(el, fn.typed ? [name].concat(args) : args)
-        } catch (e) { /* error */}
-        if (fns[i] !== fn) { i-- }
-        fn.busy = 0
+
+        fn.apply(el, fn.typed ? [name].concat(args) : args)
+
       }
 
       if (callbacks.all && name != 'all')
