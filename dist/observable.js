@@ -72,16 +72,7 @@
   defineProperty('one', function(events, fn) {
     function on() {
       el.off(events, on)
-
-      // V8 performance optimization
-      // https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments
-      var arglen = arguments.length
-      var args = new Array(arglen)
-      for (var i = 0; i < arglen; i++) {
-        args[i] = arguments[i]
-      }
-
-      fn.apply(el, args)
+      fn.apply(el, arguments)
     }
     return el.on(events, on)
   })
@@ -93,12 +84,13 @@
    */
 
   defineProperty('trigger', function(events) {
-    // V8 performance optimization
-    // https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments
-    var arglen = arguments.length - 1
-    var args = new Array(arglen)
+
+    // getting the arguments
+    // skipping the first one
+    var arglen = arguments.length - 1,
+      args = new Array(arglen)
     for (var i = 0; i < arglen; i++) {
-      args[i] = arguments[i + 1] // skip first argument
+      args[i] = arguments[i + 1]
     }
 
     onEachEvent(events, function(name) {

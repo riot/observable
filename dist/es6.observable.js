@@ -119,3 +119,4 @@ var observable = function(el) {
   return el
 
 }
+export default observable
