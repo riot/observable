@@ -58,7 +58,7 @@ In case of errors in your `callbacks` the observable instance will emit the `err
 ``` js
 
 el.on('error', function(e) {
-  // the errors can be catched here
+  // the errors can be caught here
 })
 
 el.on('event', function() {
