@@ -103,7 +103,7 @@ var observable = function(el) {
 
         try {
           fn.apply(el, fn.typed ? [name].concat(args) : args)
-        } catch (e) { /* error */}
+        } catch (e) { el.trigger('error', e) }
         if (fns[i] !== fn) { i-- }
         fn.busy = 0
       }

@@ -12,7 +12,7 @@ function hasEnumerableProperty(object, key) {
 
 describe('Core specs', function() {
   var el = observable(),
-      counter = 0
+    counter = 0
 
   beforeEach(function() {
     counter = 0
@@ -105,7 +105,7 @@ describe('Core specs', function() {
 
   it('one & on sharing the same handler', function() {
     var handler1 = function() { counter++ },
-        handler2 = function() { counter++ }
+      handler2 = function() { counter++ }
 
     el.one('foo', handler1)
       .on('foo', handler2)
@@ -337,6 +337,7 @@ describe('Core specs', function() {
 
   it('Do not block callback throwing errors', function(done) {
 
+    el.on('error', function() { counter++ })
     el.on('event', function() { counter++; throw 'OH NOES!' })
     el.on('event', function() { counter++ })
 
@@ -344,7 +345,7 @@ describe('Core specs', function() {
 
     setTimeout(function() {
       el.trigger('event')
-      expect(counter).to.be(4)
+      expect(counter).to.be(6)
       done()
     }, 1000)
   })
