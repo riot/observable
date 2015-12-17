@@ -363,5 +363,30 @@ describe('Core specs', function() {
     expect(counter).to.be(2)
   })
 
+  it('The trigger method executes over an immutable callback queue', function () {
+    var s = '',
+      el2 = observable(),
+      cb4 = function () { s += '4' },
+      cb3 = function () { el2.on('e', cb4); s += '3' },
+      cb2 = function () { s += '2' },
+      cb1 = function () { el2.off('e', cb2); s += '1' }
+
+    // trigger executes a shallow copy of the callbacks
+    el2.on('e', cb1).on('e', cb2).on('e', cb3).trigger('e').off('*')
+    expect(s).to.be('123')
+  })
+
+  it('The use of `error` handlers is optional, defaults to throw', function () {
+
+    el.on('e', function () { throw new Error('foo') })
+      .one('error', function (e) { err = e.message })
+      .trigger('e')
+    expect(err).to.contain('foo')
+
+    // expect(el.trigger).withArgs('e').to.throw() //can I make work this?
+    try { el.trigger('e') }
+    catch (e) { counter = -1 }
+    expect(counter).to.be(-1)
+  })
 })
 

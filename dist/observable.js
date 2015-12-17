@@ -12,6 +12,7 @@
    */
 
   var callbacks = {},
+    aSlice = Array.prototype.slice,
     onEachEvent = function(e, fn) { e.replace(/\S+/g, fn) },
     defineProperty = function (key, value) {
       Object.defineProperty(el, key, {
@@ -87,15 +88,11 @@
 
     // getting the arguments
     // skipping the first one
-    var arglen = arguments.length - 1,
-      args = new Array(arglen)
-    for (var i = 0; i < arglen; i++) {
-      args[i] = arguments[i + 1]
-    }
+    var args = aSlice.call(arguments, 1)
 
     onEachEvent(events, function(name) {
 
-      var fns = (callbacks[name] || []).slice(0)
+      var fns = aSlice.call(callbacks[name] || [], 0)
 
       for (var i = 0, fn; fn = fns[i]; ++i) {
         if (fn.busy) return
@@ -103,8 +100,11 @@
 
         try {
           fn.apply(el, fn.typed ? [name].concat(args) : args)
-        } catch (e) { el.trigger('error', e) }
-        if (fns[i] !== fn) { i-- }
+        } catch (e) {
+          if (callbacks.error && callbacks.error.length) el.trigger('error', e)
+          else throw e
+        }
+
         fn.busy = 0
       }
 
