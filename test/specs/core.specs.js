@@ -207,13 +207,35 @@ describe('Core specs', function() {
       counter++
     }
 
-    el.on('all', func)
+    el.on('*', func)
 
     el.trigger('a', 'foo', 'bar')
     el.trigger('b')
     el.trigger('c')
 
     expect(counter).to.be(3)
+
+  })
+
+  it('remove only the all listeners', function() {
+
+    function func() {
+      counter ++
+    }
+    function func2() {
+      counter ++
+    }
+
+    el
+      .on('*', func)
+      .on('*', func2)
+      .on('foo', func)
+      .off('*', func)
+      .trigger('foo')
+      .off('*')
+      .trigger('foo')
+
+    expect(counter).to.be(2)
 
   })
 
@@ -228,7 +250,7 @@ describe('Core specs', function() {
       counter++
     }
 
-    el.one('all', func)
+    el.one('*', func)
 
     el.trigger('a', 'foo', 'bar')
     el.trigger('b')
@@ -335,19 +357,15 @@ describe('Core specs', function() {
 
   })
 
-  it('Do not block callback throwing errors', function(done) {
+  it('Do not block callback throwing errors', function() {
 
     el.on('error', function() { counter++ })
     el.on('event', function() { counter++; throw 'OH NOES!' })
     el.on('event', function() { counter++ })
 
-    el.trigger('event')
+    expect(el.trigger).withArgs('event').to.throwException()
+    expect(counter).to.be(1)
 
-    setTimeout(function() {
-      el.trigger('event')
-      expect(counter).to.be(6)
-      done()
-    }, 1000)
   })
 
   it('The one event is called once also in a recursive function', function() {
