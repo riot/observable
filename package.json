@@ -1,8 +1,9 @@
 {
   "name": "riot-observable",
-  "version": "2.3.12",
+  "version": "2.3.13",
   "description": "Simple script to send and receive events",
   "main": "dist/observable.js",
+  "jsnext:main": "dist/es6.observable.js",
   "directories": {
     "lib": "lib"
   },
