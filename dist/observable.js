@@ -11,6 +11,7 @@
    * Private variables and methods
    */
   var callbacks = {},
+    slice = Array.prototype.slice,
     onEachEvent = function(e, fn) { e.replace(/\S+/g, fn) },
     defineProperty = function (key, value) {
       Object.defineProperty(el, key, {
@@ -82,15 +83,12 @@
 
     // getting the arguments
     // skipping the first one
-    var arglen = arguments.length - 1,
-      args = new Array(arglen)
-    for (var i = 0; i < arglen; i++) {
-      args[i] = arguments[i + 1]
-    }
+    var args = slice.call(arguments, 1),
+      fns
 
     onEachEvent(events, function(name) {
 
-      var fns = (callbacks[name] || []).slice(0)
+      fns = slice.call(callbacks[name] || [], 0)
 
       for (var i = 0, fn; fn = fns[i]; ++i) {
         if (fn.busy) return
