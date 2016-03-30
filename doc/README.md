@@ -27,7 +27,6 @@ car.trigger('start')
 
 @returns the given object `el` or a new observable instance
 
-
 ### <a name="on"></a> el.on(events, callback)
 
 Listen to the given space separated list of `events` and execute the `callback` each time an event is triggered.
@@ -134,3 +133,25 @@ el.trigger('start', { fuel: 89 }, true)
 ```
 
 @returns `el`
+
+### <a name="namespacing"></a> namespacing
+
+Events can be namespaced on a single level by using a `.` delimiter. Namespaced events listen to the primary event and can also be specifically triggered or removed.
+
+``` js
+// listen to start and start.honda events
+el.on('start.honda', function() {
+})
+
+// trigger all start events (including start.honda)
+el.trigger('start')
+
+// trigger only start.honda events
+el.trigger('start.honda')
+
+// remove only honda start events
+el.off('start.honda')
+
+// remove all start events (including start.honda)
+el.off('start')
+```
