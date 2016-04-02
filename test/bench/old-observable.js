@@ -1,4 +1,4 @@
-var observable = function(el) {
+;(function(window, undefined) {var observable = function(el) {
 
   /**
    * Extend the original object or create a new empty one
@@ -12,16 +12,7 @@ var observable = function(el) {
    */
   var callbacks = {},
     slice = Array.prototype.slice,
-    onEachEvent = function(e, fn) {
-      e.replace(/\S+/g, function(name, pos, ns) {
-        if (/\./.test(name)) {
-          name = name.split('.')
-          ns   = name.splice(1).join('.')
-          name = name[0]
-        } else ns = ''
-        fn(name, pos, ns)
-      })
-    }
+    onEachEvent = function(e, fn) { e.replace(/\S+/g, fn) }
 
   // extend the object adding the observable methods
   Object.defineProperties(el, {
@@ -35,10 +26,9 @@ var observable = function(el) {
       value: function(events, fn) {
         if (typeof fn != 'function')  return el
 
-        onEachEvent(events, function(name, pos, ns) {
+        onEachEvent(events, function(name, pos) {
           (callbacks[name] = callbacks[name] || []).push(fn)
           fn.typed = pos > 0
-          fn.ns = ns
         })
 
         return el
@@ -58,11 +48,11 @@ var observable = function(el) {
       value: function(events, fn) {
         if (events == '*' && !fn) callbacks = {}
         else {
-          onEachEvent(events, function(name, pos, ns) {
-            if (fn || ns) {
+          onEachEvent(events, function(name) {
+            if (fn) {
               var arr = callbacks[name]
               for (var i = 0, cb; cb = arr && arr[i]; ++i) {
-                if (cb == fn || ns && cb.ns == ns) arr.splice(i--, 1)
+                if (cb == fn) arr.splice(i--, 1)
               }
             } else delete callbacks[name]
           })
@@ -110,14 +100,14 @@ var observable = function(el) {
           args[i] = arguments[i + 1] // skip first argument
         }
 
-        onEachEvent(events, function(name, pos, ns) {
+        onEachEvent(events, function(name) {
 
           fns = slice.call(callbacks[name] || [], 0)
 
           for (var i = 0, fn; fn = fns[i]; ++i) {
             if (fn.busy) return
             fn.busy = 1
-            if (!ns || fn.ns == ns) fn.apply(el, fn.typed ? [name].concat(args) : args)
+            fn.apply(el, fn.typed ? [name].concat(args) : args)
             if (fns[i] !== fn) { i-- }
             fn.busy = 0
           }
@@ -138,4 +128,13 @@ var observable = function(el) {
   return el
 
 }
-export default observable
+  /* istanbul ignore next */
+  // support CommonJS, AMD & browser
+  if (typeof exports === 'object')
+    module.exports = observable
+  else if (typeof define === 'function' && define.amd)
+    define(function() { return observable })
+  else
+    window.observable = observable
+
+})(typeof window != 'undefined' ? window : undefined);
