@@ -26,6 +26,10 @@ eslint:
 test-karma:
 	@ $(KARMA) start test/karma.conf.js
 
+perf: build
+	# run the performance tests
+	@ node test/bench/speed
+
 test-coveralls:
 	@ RIOT_COV=1 cat ./coverage/lcov.info ./coverage/report-lcov/lcov.info | $(COVERALLS)
 
