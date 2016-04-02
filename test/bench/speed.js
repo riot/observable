@@ -54,7 +54,6 @@ suite
       el.off('*')
     }
   })
-
   .add('old-observable#simple event', function() {
     iterationsCounter++
     oldEl.trigger('foo')
