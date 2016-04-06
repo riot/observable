@@ -20,10 +20,10 @@ riot.observable = function(el) {
     slice = Array.prototype.slice,
     onEachEvent = function(e, fn) {
       var es = e.split(' '), l = es.length, i = 0, name, indx
-      for(; i < l; i++){
+      for (; i < l; i++) {
         name = es[i]
         indx = name.indexOf('.')
-        if(name) fn( ~indx ? name.substring(0, indx) : name, i, ~indx ? name.slice(indx + 1) : null)
+        if (name) fn( ~indx ? name.substring(0, indx) : name, i, ~indx ? name.slice(indx + 1) : null)
       }
     }
 
