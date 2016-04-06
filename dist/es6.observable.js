@@ -18,10 +18,14 @@ var observable = function(el) {
    */
   var callbacks = {},
     slice = Array.prototype.slice,
-    onEachEvent = function(e, fn) { e.replace(EVENTS_GROUP_REGEX, function(name, pos, ns) {
-      name = name.split('.')
-      fn(name[0], pos, name.splice(1).join('.'))
-    })}
+    onEachEvent = function(e, fn) {
+      var es = e.split(' '), l = es.length, i = 0, name, indx
+      for(; i < l; i++){
+        name = es[i]
+        indx = name.indexOf('.')
+        if(name) fn( ~indx ? name.substring(0, indx) : name, i, ~indx ? name.slice(indx + 1) : null)
+      }
+    }
 
   // extend the object adding the observable methods
   Object.defineProperties(el, {
@@ -111,9 +115,7 @@ var observable = function(el) {
         }
 
         onEachEvent(events, function(name, pos, ns) {
-
           fns = slice.call(callbacks[name] || [], 0)
-
           for (var i = 0, fn; fn = fns[i]; ++i) {
             if (fn.busy) return
             fn.busy = 1
