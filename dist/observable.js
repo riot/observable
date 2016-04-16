@@ -130,7 +130,7 @@
           fns = slice.call(callbacks[name] || [], 0)
 
           for (var i = 0, fn; fn = fns[i]; ++i) {
-            if (fn.busy) return
+            if (fn.busy) continue
             fn.busy = 1
             if (!ns || fn.ns == ns) fn.apply(el, fn.typed ? [name].concat(args) : args)
             if (fns[i] !== fn) { i-- }

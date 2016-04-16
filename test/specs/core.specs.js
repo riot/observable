@@ -308,6 +308,25 @@ describe('Core specs', function() {
 
   })
 
+  it('Run the other callbacks even when one of them has the "busy" flag set to "true"', function() {
+
+    function fn() {
+      counter ++
+    }
+
+    function fn2() {
+      counter ++
+    }
+
+    fn.busy = 1
+
+    el.on('foo', fn).on('foo', fn2)
+    el.trigger('foo')
+
+    expect(counter).to.be(1)
+
+  })
+
   it('should not throw internal error', function() {
 
     el.off('non-existing', function() {})
