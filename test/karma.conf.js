@@ -16,6 +16,10 @@ module.exports = function(config) {
       'specs/core.specs.js'
     ],
 
+    client: {
+      captureConsole: true,
+    },
+
     browsers: ['PhantomJS'],
 
     reporters: ['progress', 'coverage'],
