@@ -23,11 +23,19 @@ var observable = function(el) {
    * @param   {Function}   fn - callback
    */
   function onEachEvent(e, fn) {
-    var es = e.split(' '), l = es.length, i = 0, name, indx
+    var isString = typeof e === 'string',
+      es = isString ? e.split(' ') : e,
+      l = es.length,
+      i = 0,
+      name,
+      indx
+
     for (; i < l; i++) {
       name = es[i]
-      indx = name.indexOf('.')
-      if (name) fn( ~indx ? name.substring(0, indx) : name, i, ~indx ? name.slice(indx + 1) : null)
+      if (name && isString) {
+        indx = name.indexOf('.')
+        fn( ~indx ? name.substring(0, indx) : name, i, ~indx ? name.slice(indx + 1) : null)
+      }
     }
   }
 
