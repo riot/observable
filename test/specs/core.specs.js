@@ -157,30 +157,6 @@ describe('Core specs', function() {
 
   })
 
-  describe('does not call trigger infinitely', function() {
-
-    var otherEl = observable()
-
-    it('2 calls are enough to know the test failed', function() {
-
-      el.on('update', function(value) {
-        if (counter++ < 1) {
-          otherEl.trigger('update', value)
-        }
-      })
-
-      otherEl.on('update', function(value) {
-        el.trigger('update', value)
-      })
-
-      el.trigger('update', 'foo')
-
-      expect(counter).to.be(1)
-
-    })
-
-  })
-
   it('is able to trigger events inside a listener', function() {
 
     var e2 = false
@@ -305,25 +281,6 @@ describe('Core specs', function() {
 
     expect(one).to.be(1)
     expect(two).to.be(2)
-
-  })
-
-  it('Run the other callbacks even when one of them has the "busy" flag set to "true"', function() {
-
-    function fn() {
-      counter ++
-    }
-
-    function fn2() {
-      counter ++
-    }
-
-    fn.busy = 1
-
-    el.on('foo', fn).on('foo', fn2)
-    el.trigger('foo')
-
-    expect(counter).to.be(1)
 
   })
 
