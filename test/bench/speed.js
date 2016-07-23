@@ -54,6 +54,21 @@ suite
       oldEl.off('*')
     }
   })
+  .add('old-observable#multiple events', function() {
+    iterationsCounter++
+    oldEl.trigger('foo')
+  }, {
+    onStart() {
+      iterationsCounter = 0
+      eventsCounter = 0
+      var fn = () => eventsCounter++
+      oldEl.on('foo bar', fn)
+    },
+    onComplete() {
+      expect(eventsCounter).to.be(iterationsCounter)
+      oldEl.off('*')
+    }
+  })
 
   .on('cycle', function(event) {
     console.log(String(event.target))
