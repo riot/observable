@@ -67,17 +67,21 @@ describe('Core specs', function() {
 
   })
 
-  it('multiple listeners with special chars', function() {
+  it('listeners with special chars', function() {
 
-    el.on('b/4 c-d d:x', function(e) {
-      if (++counter == 3) expect(e).to.be('d:x')
-    })
+    var handler = function() {
+      counter++
+    }
+
+    el.on('b/4', handler).on('c-d', handler).on('d:x', handler)
 
     el.one('d:x', function(arg) {
       expect(arg).to.be(true)
     })
 
     el.trigger('b/4').trigger('c-d').trigger('d:x', true)
+
+    expect(counter).to.be(3)
 
   })
 
@@ -130,18 +134,6 @@ describe('Core specs', function() {
     }
 
     el.on('r', r).on('s', r).off('s', r).trigger('r').trigger('s')
-
-  })
-
-  it('Remove multiple listeners', function() {
-
-    function fn() {
-      counter++
-    }
-
-    el.on('a1 b1', fn).on('c1', fn).off('a1 b1').off('c1').trigger('a1').trigger('b1').trigger('c1')
-
-    expect(counter).to.be(0)
 
   })
 
@@ -299,18 +291,6 @@ describe('Core specs', function() {
     expect(counter).to.be(0)
   })
 
-  it('multi trigger', function() {
-    var fn = function(val) {
-      counter ++
-      expect(val).to.be(true)
-    }
-
-    el.on('foo', fn).on('bar', fn)
-    el.trigger('foo bar', true)
-
-    expect(counter).to.be(2)
-  })
-
   it('remove handler while triggering', function() {
 
     function handler() {
@@ -335,7 +315,6 @@ describe('Core specs', function() {
 
   it('Do not block callback throwing errors', function() {
 
-    el.on('error', function() { counter++ })
     el.on('event', function() { counter++; throw 'OH NOES!' })
     el.on('event', function() { counter++ })
 
