@@ -10,7 +10,6 @@ module.exports = function(config) {
       'karma-phantomjs-launcher'
     ],
     files: [
-      '../node_modules/mocha/mocha.js',
       '../node_modules/expect.js/index.js',
       '../dist/observable.js',
       'specs/core.specs.js'

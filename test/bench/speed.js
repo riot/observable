@@ -9,7 +9,7 @@ var Benchmark = require('benchmark'),
   eventsCounter = 0
 
 suite
-  .add('new-observable#simple event', function() {
+  .add('new-observable', function() {
     iterationsCounter++
     el.trigger('foo')
   }, {
@@ -24,37 +24,7 @@ suite
       el.off('*')
     }
   })
-  .add('new-observable#namespaced event', function() {
-    iterationsCounter++
-    el.trigger('foo')
-  }, {
-    onStart() {
-      iterationsCounter = 0
-      eventsCounter = 0
-      var fn = () => eventsCounter++
-      el.on('foo.bar', fn)
-    },
-    onComplete() {
-      expect(eventsCounter).to.be(iterationsCounter)
-      el.off('*')
-    }
-  })
-  .add('new-observable#multiple events', function() {
-    iterationsCounter++
-    el.trigger('foo')
-  }, {
-    onStart() {
-      iterationsCounter = 0
-      eventsCounter = 0
-      var fn = () => eventsCounter++
-      el.on('foo bar', fn)
-    },
-    onComplete() {
-      expect(eventsCounter).to.be(iterationsCounter)
-      el.off('*')
-    }
-  })
-  .add('old-observable#simple event', function() {
+  .add('old-observable', function() {
     iterationsCounter++
     oldEl.trigger('foo')
   }, {
@@ -69,22 +39,6 @@ suite
       oldEl.off('*')
     }
   })
-  .add('old-observable#multiple events', function() {
-    iterationsCounter++
-    oldEl.trigger('foo')
-  }, {
-    onStart() {
-      iterationsCounter = 0
-      eventsCounter = 0
-      var fn = () => eventsCounter++
-      oldEl.on('foo bar', fn)
-    },
-    onComplete() {
-      expect(eventsCounter).to.be(iterationsCounter)
-      oldEl.off('*')
-    }
-  })
-
   .on('cycle', function(event) {
     console.log(String(event.target))
   })
