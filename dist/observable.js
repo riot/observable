@@ -25,7 +25,7 @@
   function onEachEvent(e, fn) {
     var es = e.split(' '), l = es.length, i = 0
     for (; i < l; i++) {
-      name = es[i]
+      var name = es[i]
       if (name) fn(name, i)
     }
   }
@@ -69,8 +69,8 @@
       value: function(events, fn) {
         if (events == '*' && !fn) callbacks = {}
         else {
-          onEachEvent(events, function(name, pos, ns) {
-            if (fn || ns) {
+          onEachEvent(events, function(name, pos) {
+            if (fn) {
               var arr = callbacks[name]
               for (var i = 0, cb; cb = arr && arr[i]; ++i) {
                 if (cb == fn) arr.splice(i--, 1)
@@ -123,7 +123,7 @@
           args[i] = arguments[i + 1] // skip first argument
         }
 
-        onEachEvent(events, function(name, pos, ns) {
+        onEachEvent(events, function(name, pos) {
 
           fns = slice.call(callbacks[name] || [], 0)
 
