@@ -336,20 +336,5 @@ describe('Core specs', function() {
     expect(counter).to.be(2)
   })
 
-  it('The namespaced events are properly called', function() {
-
-    el
-      .on('hello', function(a) { counter++ })
-      .on('hello.world', function(a) { counter++ })
-
-    el.trigger('hello', 'both')
-    expect(counter).to.be(2)
-    el.trigger('hello.world', 'one')
-    expect(counter).to.be(3)
-    el.off('hello.world')
-    el.trigger('hello', 'just "hello"')
-    expect(counter).to.be(4)
-  })
-
 })
 

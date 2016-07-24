@@ -14,20 +14,6 @@
     slice = Array.prototype.slice
 
   /**
-   * Private Methods
-   */
-
-  /**
-   * Helper function needed to get and loop all the event in a string
-   * @param   { String }   name - event string
-   * @param   {Function}   fn - callback
-   */
-  function parseEvent(name, fn) {
-    var indx = name.indexOf('.')
-    if (name) fn(~indx ? name.substring(0, indx) : name, ~indx ? name.slice(indx + 1) : null)
-  }
-
-  /**
    * Public Api
    */
 
@@ -42,13 +28,8 @@
      */
     on: {
       value: function(event, fn) {
-        if (typeof fn != 'function')  return el
-
-        parseEvent(event, function(name, ns) {
-          (callbacks[name] = callbacks[name] || []).push(fn)
-          fn.ns = ns
-        })
-
+        if (typeof fn == 'function')
+          (callbacks[event] = callbacks[event] || []).push(fn)
         return el
       },
       enumerable: false,
@@ -66,14 +47,12 @@
       value: function(event, fn) {
         if (event == '*' && !fn) callbacks = {}
         else {
-          parseEvent(event, function(name, ns) {
-            if (fn || ns) {
-              var arr = callbacks[name]
-              for (var i = 0, cb; cb = arr && arr[i]; ++i) {
-                if (cb == fn || ns && cb.ns == ns) arr.splice(i--, 1)
-              }
-            } else delete callbacks[name]
-          })
+          if (fn) {
+            var arr = callbacks[event]
+            for (var i = 0, cb; cb = arr && arr[i]; ++i) {
+              if (cb == fn) arr.splice(i--, 1)
+            }
+          } else delete callbacks[event]
         }
         return el
       },
@@ -114,25 +93,23 @@
         // getting the arguments
         var arglen = arguments.length - 1,
           args = new Array(arglen),
-          fns
+          fns,
+          fn,
+          i
 
-        for (var i = 0; i < arglen; i++) {
+        for (i = 0; i < arglen; i++) {
           args[i] = arguments[i + 1] // skip first argument
         }
 
-        parseEvent(event, function(name, ns) {
+        fns = slice.call(callbacks[event] || [], 0)
 
-          fns = slice.call(callbacks[name] || [], 0)
+        for (i = 0; fn = fns[i]; ++i) {
+          fn.apply(el, args)
+          if (fns[i] !== fn) { i-- }
+        }
 
-          for (var i = 0, fn; fn = fns[i]; ++i) {
-            if (!ns || fn.ns == ns) fn.apply(el, args)
-            if (fns[i] !== fn) { i-- }
-          }
-
-          if (callbacks['*'] && name != '*')
-            el.trigger.apply(el, ['*', name].concat(args))
-
-        })
+        if (callbacks['*'] && event != '*')
+          el.trigger.apply(el, ['*', event].concat(args))
 
         return el
       },
