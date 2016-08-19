@@ -55,8 +55,9 @@
 
           // If the registered function has already been triggered and
           // always is set, then call the function
-          callbacks[name].called = callbacks[name].called || {}
-          if (callbacks[name].called[ns ? ns : '*'] && always) fn.apply(el, fn.typed ? [name].concat(callbacks[name].called[ns ? ns : '*']) : callbacks[name].called[ns ? ns : '*'] )
+          callbacks[name].called = callbacks[name].called || false
+          if (callbacks[name].called && always) fn.apply(el, fn.typed ? [name].concat(callbacks[name].called) : callbacks[name].called)
+
         })
 
         return el
@@ -131,11 +132,15 @@
         }
 
         onEachEvent(events, function(name, pos, ns) {
-          // Make sure we have such an event registered
           callbacks[name] = callbacks[name] || []
-          // Setup namespace called records
-          callbacks[name].called = callbacks[name].called || {}
-          callbacks[name].called[ns ? ns : '*'] = args
+
+          // Namespaced events listen to the parent event, so we should follow
+          // suit and not only trigger namespaced events
+          //callbacks[name].called = callbacks[name].called || true
+          //callbacks[name].called[ns ? ns : '*'] = args
+
+          // Overwrite so only the last triggered value remains
+          callbacks[name].called = args
 
           fns = slice.call(callbacks[name], 0)
 
