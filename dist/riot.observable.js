@@ -41,15 +41,19 @@ riot.observable = function(el) {
      * execute the `callback` each time an event is triggered.
      * @param  { String } events - events ids
      * @param  { Function } fn - callback function
+     * @param  { Boolean } persist - should the callback be called immediately
+    *                      if the event has been called in the past?
      * @returns { Object } el
      */
     on: {
-      value: function(events, fn) {
+      value: function(events, fn, persist) {
         if (typeof fn != 'function')  return el
 
         onEachEvent(events, function(name, pos) {
           (callbacks[name] = callbacks[name] || []).push(fn)
           fn.typed = pos > 0
+          callbacks[name].called = callbacks[name].called || false
+          if (callbacks[name].called && persist) fn.apply(el, fn.typed ? [name].concat(callbacks[name].called) : callbacks[name].called)
         })
 
         return el
@@ -90,15 +94,17 @@ riot.observable = function(el) {
      * execute the `callback` at most once
      * @param   { String } events - events ids
      * @param   { Function } fn - callback function
+     * @param   { Boolean } persist - should the callback be called immediately
+    *                      if the event has been called in the past?
      * @returns { Object } el
      */
     one: {
-      value: function(events, fn) {
+      value: function(events, fn, persist) {
         function on() {
           el.off(events, on)
           fn.apply(el, arguments)
         }
-        return el.on(events, on)
+        return el.on(events, on, persist)
       },
       enumerable: false,
       writable: false,
@@ -124,8 +130,12 @@ riot.observable = function(el) {
         }
 
         onEachEvent(events, function(name, pos) {
+          callbacks[name] = callbacks[name] || []
 
-          fns = slice.call(callbacks[name] || [], 0)
+          // Overwrite so only the last triggered value remains
+          callbacks[name].called = args
+
+          fns = slice.call(callbacks[name], 0)
 
           for (var i = 0, fn; fn = fns[i]; ++i) {
             if (fn.busy) continue

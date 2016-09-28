@@ -27,9 +27,12 @@ car.trigger('start')
 
 @returns the given object `el` or a new observable instance
 
-### <a name="on"></a> el.on(events, callback)
+### <a name="on"></a> el.on(events, callback, persist)
 
 Listen to the given space separated list of `events` and execute the `callback` each time an event is triggered.
+
+If `persist` is set to `true`, then it will immediately execute `callback` *if* trigger has been
+called for the `event`. Useful for eliminating race-conditions with server data.
 
 ``` js
 // listen to single event
@@ -50,13 +53,21 @@ el.on('*', function(event, param1, param2) {
   // do something with the parameters
 })
 
+// delayed event registration
+el.trigger('start')
+el.on('start', function() {
+  // This will execute even though it is setup after the trigger
+}, true)
+
 ```
 
 @returns `el`
 
-### <a name="one"></a> el.one(event, callback)
+### <a name="one"></a> el.one(event, callback, persist)
 
 Listen to the given space separated list of `events` and execute the `callback` at most once
+
+Persist works the same as `on` event.
 
 ``` js
 // run the function once, even if 'start' is triggered multiple times
