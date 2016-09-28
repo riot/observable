@@ -67,8 +67,39 @@ describe('Core specs', function() {
 
   })
 
-  it('multiple listeners with special chars', function() {
+  it('single listener with always', function(done) {
 
+    el.on('a', function(arg){
+      expect(arg).to.be(true)
+    })
+
+    el.trigger('a', true)
+
+    el.on('a', function(arg) {
+      expect(arg).to.be(true)
+      done()
+    }, true)
+
+  })
+
+  it('single listener without always', function(done) {
+
+    el.on('b', function(arg){
+      expect(arg).to.be(true)
+    })
+
+    el.trigger('b', true)
+
+    el.on('b', function(arg) {
+      done('This should not run')
+    })
+
+    setTimeout(done, 1000)
+
+  })
+
+  it('multiple listeners with special chars', function() {
+    var counter = 0
     el.on('b/4 c-d d:x', function(e) {
       if (++counter == 3) expect(e).to.be('d:x')
     })
@@ -82,12 +113,22 @@ describe('Core specs', function() {
   })
 
   it('one', function() {
-
+    var counter = 0
     el.one('g', function() {
       expect(++counter).to.be(1)
     })
 
     el.trigger('g').trigger('g')
+
+  })
+
+  it('one with always', function(done) {
+
+    el.trigger('g').trigger('g')
+    el.one('g', function() {
+      expect(++counter).to.be(1)
+      done()
+    }, true)
 
   })
 
@@ -400,4 +441,3 @@ describe('Core specs', function() {
     expect(counter).to.be(2)
   })
 })
-
