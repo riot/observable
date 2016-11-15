@@ -105,7 +105,6 @@ riot.observable = function(el) {
 
         for (i = 0; fn = fns[i]; ++i) {
           fn.apply(el, args)
-          if (fns[i] !== fn) { i-- }
         }
 
         if (callbacks['*'] && event != '*')
