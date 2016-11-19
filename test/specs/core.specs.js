@@ -67,17 +67,21 @@ describe('Core specs', function() {
 
   })
 
-  it('multiple listeners with special chars', function() {
+  it('listeners with special chars', function() {
 
-    el.on('b/4 c-d d:x', function(e) {
-      if (++counter == 3) expect(e).to.be('d:x')
-    })
+    var handler = function() {
+      counter++
+    }
+
+    el.on('b/4', handler).on('c-d', handler).on('d:x', handler)
 
     el.one('d:x', function(arg) {
       expect(arg).to.be(true)
     })
 
     el.trigger('b/4').trigger('c-d').trigger('d:x', true)
+
+    expect(counter).to.be(3)
 
   })
 
@@ -133,18 +137,6 @@ describe('Core specs', function() {
 
   })
 
-  it('Remove multiple listeners', function() {
-
-    function fn() {
-      counter++
-    }
-
-    el.on('a1 b1', fn).on('c1', fn).off('a1 b1').off('c1').trigger('a1').trigger('b1').trigger('c1')
-
-    expect(counter).to.be(0)
-
-  })
-
   it('Removes duplicate callbacks on off for specific handler', function() {
 
     function func() {
@@ -154,30 +146,6 @@ describe('Core specs', function() {
     el.on('a1', func).on('a1', func).trigger('a1').off('a1', func).trigger('a1')
 
     expect(counter).to.be(2)
-
-  })
-
-  describe('does not call trigger infinitely', function() {
-
-    var otherEl = observable()
-
-    it('2 calls are enough to know the test failed', function() {
-
-      el.on('update', function(value) {
-        if (counter++ < 1) {
-          otherEl.trigger('update', value)
-        }
-      })
-
-      otherEl.on('update', function(value) {
-        el.trigger('update', value)
-      })
-
-      el.trigger('update', 'foo')
-
-      expect(counter).to.be(1)
-
-    })
 
   })
 
@@ -308,25 +276,6 @@ describe('Core specs', function() {
 
   })
 
-  it('Run the other callbacks even when one of them has the "busy" flag set to "true"', function() {
-
-    function fn() {
-      counter ++
-    }
-
-    function fn2() {
-      counter ++
-    }
-
-    fn.busy = 1
-
-    el.on('foo', fn).on('foo', fn2)
-    el.trigger('foo')
-
-    expect(counter).to.be(1)
-
-  })
-
   it('should not throw internal error', function() {
 
     el.off('non-existing', function() {})
@@ -340,18 +289,6 @@ describe('Core specs', function() {
     el.off('foo bar', fn)
     el.trigger('foo bar')
     expect(counter).to.be(0)
-  })
-
-  it('multi trigger', function() {
-    var fn = function(val) {
-      counter ++
-      expect(val).to.be(true)
-    }
-
-    el.on('foo', fn).on('bar', fn)
-    el.trigger('foo bar', true)
-
-    expect(counter).to.be(2)
   })
 
   it('remove handler while triggering', function() {
@@ -378,7 +315,6 @@ describe('Core specs', function() {
 
   it('Do not block callback throwing errors', function() {
 
-    el.on('error', function() { counter++ })
     el.on('event', function() { counter++; throw 'OH NOES!' })
     el.on('event', function() { counter++ })
 
@@ -399,5 +335,6 @@ describe('Core specs', function() {
     el.trigger('event')
     expect(counter).to.be(2)
   })
+
 })
 

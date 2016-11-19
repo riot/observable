@@ -14,8 +14,6 @@ build:
 	@ cat lib/index.js > dist/es6.observable.js
 	# es6
 	@ echo 'export default observable' >> dist/es6.observable.js
-	# riot
-	@ cat lib/index.js | sed -e 's/var observable/riot.observable/g' > dist/riot.observable.js
 
 test: eslint test-karma
 
