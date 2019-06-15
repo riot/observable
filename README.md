@@ -44,5 +44,5 @@ Once the core and events are carefully designed the team members are enabled to 
 [coverage-image]:https://img.shields.io/coveralls/riot/observable/master.svg?style=flat-square
 [coverage-url]:https://coveralls.io/r/riot/observable/?branch=master
 
-[codeclimate-image]:https://img.shields.io/codeclimate/github/riot/observable.svg?style=flat-square
+[codeclimate-image]:https://api.codeclimate.com/v1/badges/d1403f06d0e9467985e3/maintainability
 [codeclimate-url]:https://codeclimate.com/github/riot/observable
