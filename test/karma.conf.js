@@ -7,7 +7,7 @@ module.exports = function(config) {
     plugins: [
       'karma-mocha',
       'karma-coverage',
-      'karma-phantomjs-launcher'
+      'karma-chrome-launcher'
     ],
     files: [
       '../node_modules/expect.js/index.js',
@@ -15,7 +15,14 @@ module.exports = function(config) {
       'specs/core.specs.js'
     ],
 
-    browsers: ['PhantomJS'],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
+
+    browsers: ['ChromeHeadlessNoSandbox'],
 
     reporters: ['progress', 'coverage'],
     preprocessors: {

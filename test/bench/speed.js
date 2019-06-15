@@ -1,4 +1,4 @@
-var Benchmark = require('benchmark'),
+let Benchmark = require('benchmark'),
   suite = new Benchmark.Suite(),
   expect = require('expect.js'),
   observable = require('../..'),
@@ -16,7 +16,7 @@ suite
     onStart() {
       iterationsCounter = 0
       eventsCounter = 0
-      var fn = () => eventsCounter++
+      const fn = () => eventsCounter++
       el.on('foo', fn)
     },
     onComplete() {
@@ -31,7 +31,7 @@ suite
     onStart() {
       iterationsCounter = 0
       eventsCounter = 0
-      var fn = () => eventsCounter++
+      const fn = () => eventsCounter++
       oldEl.on('foo', fn)
     },
     onComplete() {
@@ -43,6 +43,6 @@ suite
     console.log(String(event.target))
   })
   .on('complete', function() {
-    console.log('Fastest is ' + this.filter('fastest').map('name'))
+    console.log(`Fastest is ${this.filter('fastest').map('name')}`)
   })
   .run()

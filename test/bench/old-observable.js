@@ -8,29 +8,28 @@
   el = el || {}
 
   /**
-   * Private variables and methods
+   * Private variables
    */
   var callbacks = {},
-    slice = Array.prototype.slice,
-    onEachEvent = function(e, fn) { e.replace(/\S+/g, fn) }
+    slice = Array.prototype.slice
 
-  // extend the object adding the observable methods
+  /**
+   * Public Api
+   */
+
+  // extend the el object adding the observable methods
   Object.defineProperties(el, {
     /**
-     * Listen to the given space separated list of `events` and execute the `callback` each time an event is triggered.
-     * @param  { String } events - events ids
+     * Listen to the given `event` ands
+     * execute the `callback` each time an event is triggered.
+     * @param  { String } event - event id
      * @param  { Function } fn - callback function
      * @returns { Object } el
      */
     on: {
-      value: function(events, fn) {
-        if (typeof fn != 'function')  return el
-
-        onEachEvent(events, function(name, pos) {
-          (callbacks[name] = callbacks[name] || []).push(fn)
-          fn.typed = pos > 0
-        })
-
+      value: function(event, fn) {
+        if (typeof fn == 'function')
+          (callbacks[event] = callbacks[event] || []).push(fn)
         return el
       },
       enumerable: false,
@@ -39,23 +38,21 @@
     },
 
     /**
-     * Removes the given space separated list of `events` listeners
-     * @param   { String } events - events ids
+     * Removes the given `event` listeners
+     * @param   { String } event - event id
      * @param   { Function } fn - callback function
      * @returns { Object } el
      */
     off: {
-      value: function(events, fn) {
-        if (events == '*' && !fn) callbacks = {}
+      value: function(event, fn) {
+        if (event == '*' && !fn) callbacks = {}
         else {
-          onEachEvent(events, function(name) {
-            if (fn) {
-              var arr = callbacks[name]
-              for (var i = 0, cb; cb = arr && arr[i]; ++i) {
-                if (cb == fn) arr.splice(i--, 1)
-              }
-            } else delete callbacks[name]
-          })
+          if (fn) {
+            var arr = callbacks[event]
+            for (var i = 0, cb; cb = arr && arr[i]; ++i) {
+              if (cb == fn) arr.splice(i--, 1)
+            }
+          } else delete callbacks[event]
         }
         return el
       },
@@ -65,18 +62,19 @@
     },
 
     /**
-     * Listen to the given space separated list of `events` and execute the `callback` at most once
-     * @param   { String } events - events ids
+     * Listen to the given `event` and
+     * execute the `callback` at most once
+     * @param   { String } event - event id
      * @param   { Function } fn - callback function
      * @returns { Object } el
      */
     one: {
-      value: function(events, fn) {
+      value: function(event, fn) {
         function on() {
-          el.off(events, on)
+          el.off(event, on)
           fn.apply(el, arguments)
         }
-        return el.on(events, on)
+        return el.on(event, on)
       },
       enumerable: false,
       writable: false,
@@ -84,38 +82,33 @@
     },
 
     /**
-     * Execute all callback functions that listen to the given space separated list of `events`
-     * @param   { String } events - events ids
+     * Execute all callback functions that listen to
+     * the given `event`
+     * @param   { String } event - event id
      * @returns { Object } el
      */
     trigger: {
-      value: function(events) {
+      value: function(event) {
 
         // getting the arguments
         var arglen = arguments.length - 1,
           args = new Array(arglen),
-          fns
+          fns,
+          fn,
+          i
 
-        for (var i = 0; i < arglen; i++) {
+        for (i = 0; i < arglen; i++) {
           args[i] = arguments[i + 1] // skip first argument
         }
 
-        onEachEvent(events, function(name) {
+        fns = slice.call(callbacks[event] || [], 0)
 
-          fns = slice.call(callbacks[name] || [], 0)
+        for (i = 0; fn = fns[i]; ++i) {
+          fn.apply(el, args)
+        }
 
-          for (var i = 0, fn; fn = fns[i]; ++i) {
-            if (fn.busy) return
-            fn.busy = 1
-            fn.apply(el, fn.typed ? [name].concat(args) : args)
-            if (fns[i] !== fn) { i-- }
-            fn.busy = 0
-          }
-
-          if (callbacks['*'] && name != '*')
-            el.trigger.apply(el, ['*', name].concat(args))
-
-        })
+        if (callbacks['*'] && event != '*')
+          el.trigger.apply(el, ['*', event].concat(args))
 
         return el
       },

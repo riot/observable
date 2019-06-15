@@ -19,7 +19,7 @@ test: eslint test-karma
 
 eslint:
 	# check code style
-	@ $(ESLINT) -c ./.eslintrc lib
+	@ $(ESLINT) -c ./.eslintrc lib test/specs
 
 test-karma:
 	@ $(KARMA) start test/karma.conf.js

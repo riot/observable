@@ -1,4 +1,4 @@
-var isNode = typeof window === 'undefined'
+const isNode = typeof window === 'undefined'
 
 describe('Observable Tests', function() {
   if (isNode) {

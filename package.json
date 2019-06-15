@@ -1,5 +1,5 @@
 {
-  "name": "riot-observable",
+  "name": "@riotjs/observable",
   "version": "3.0.0",
   "description": "Simple script to send and receive events",
   "main": "dist/observable.js",
@@ -21,16 +21,17 @@
     "events"
   ],
   "devDependencies": {
-    "benchmark": "^2.1.2",
-    "coveralls": "^2.11.15",
-    "eslint": "^3.10.1",
+    "benchmark": "^2.1.4",
+    "coveralls": "^3.0.4",
+    "eslint": "^5.16.0",
+    "eslint-config-riot": "^2.0.0",
     "expect.js": "^0.3.1",
-    "karma": "^1.3.0",
-    "karma-coverage": "^1.1.1",
+    "karma": "^4.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.2",
     "karma-mocha": "^1.3.0",
-    "karma-phantomjs-launcher": "^1.0.2",
-    "mocha": "^3.1.2",
-    "phantomjs-prebuilt": "^2.1.13"
+    "mocha": "^6.1.4",
+    "phantomjs-prebuilt": "^2.1.16"
   },
   "author": "Muut, Inc. and other contributors",
   "license": "MIT",

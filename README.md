@@ -25,11 +25,11 @@ Once the core and events are carefully designed the team members are enabled to 
 
 ### Npm
 
-`$ npm install riot-observable --save`
+`$ npm install @riotjs/observable --save`
 
 ### Bower
 
-`$ bower install riot-observable --save`
+`$ bower install @riotjs/observable --save`
 
 [travis-image]:https://img.shields.io/travis/riot/observable.svg?style=flat-square
 [travis-url]:https://travis-ci.org/riot/observable
@@ -37,9 +37,9 @@ Once the core and events are carefully designed the team members are enabled to 
 [license-image]:http://img.shields.io/badge/license-MIT-000000.svg?style=flat-square
 [license-url]:LICENSE.txt
 
-[npm-version-image]:http://img.shields.io/npm/v/riot-observable.svg?style=flat-square
-[npm-downloads-image]:http://img.shields.io/npm/dm/riot-observable.svg?style=flat-square
-[npm-url]:https://npmjs.org/package/riot-observable
+[npm-version-image]:http://img.shields.io/npm/v/@riotjs/observable.svg?style=flat-square
+[npm-downloads-image]:http://img.shields.io/npm/dm/@riotjs/observable.svg?style=flat-square
+[npm-url]:https://npmjs.org/package/@riotjs/observable
 
 [coverage-image]:https://img.shields.io/coveralls/riot/observable/master.svg?style=flat-square
 [coverage-url]:https://coveralls.io/r/riot/observable/?branch=master

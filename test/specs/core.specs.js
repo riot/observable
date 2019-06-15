@@ -1,18 +1,14 @@
+/* eslint-disable fp/no-let, fp/no-delete, fp/no-arguments, prefer-rest-params */
 /*
  * Equivalent to Object.propertyIsEnumerable
  */
 function hasEnumerableProperty(object, key) {
-  for (var k in object) {
-    if (key === k) {
-      return true
-    }
-  }
-  return false
+  return Object.keys(object).some(k => k === key)
 }
 
 describe('Core specs', function() {
-  var el = observable(),
-    counter = 0
+  const el = observable()
+  let counter = 0
 
   beforeEach(function() {
     counter = 0
@@ -22,7 +18,7 @@ describe('Core specs', function() {
     el.off('*')
   })
 
-  it('public methods should not be enumerable', function () {
+  it('public methods should not be enumerable', function() {
 
     expect(hasEnumerableProperty(el, 'on')).to.be(false)
     expect(hasEnumerableProperty(el, 'one')).to.be(false)
@@ -31,7 +27,7 @@ describe('Core specs', function() {
 
   })
 
-  it('public methods can not be configurable', function () {
+  it('public methods can not be configurable', function() {
 
     delete el.on
     expect(el.on).to.not.be(undefined)
@@ -44,7 +40,7 @@ describe('Core specs', function() {
 
   })
 
-  it('public methods can not be overriden', function () {
+  it('public methods can not be overriden', function() {
 
     el.on = 'foo'
     expect(el.on).to.not.be('foo')
@@ -69,7 +65,7 @@ describe('Core specs', function() {
 
   it('listeners with special chars', function() {
 
-    var handler = function() {
+    const handler = function() {
       counter++
     }
 
@@ -108,7 +104,7 @@ describe('Core specs', function() {
   })
 
   it('one & on sharing the same handler', function() {
-    var handler1 = function() { counter++ },
+    const handler1 = function() { counter++ },
       handler2 = function() { counter++ }
 
     el.one('foo', handler1)
@@ -145,13 +141,13 @@ describe('Core specs', function() {
 
     el.on('a1', func).on('a1', func).trigger('a1').off('a1', func).trigger('a1')
 
-    expect(counter).to.be(2)
+    expect(counter).to.be(1)
 
   })
 
   it('is able to trigger events inside a listener', function() {
 
-    var e2 = false
+    let e2 = false
 
     el.on('e1', function() { this.trigger('e2') })
     el.on('e2', function() { e2 = true })
@@ -256,7 +252,7 @@ describe('Core specs', function() {
 
   it('Remove specific listener', function() {
 
-    var one = 0,
+    let one = 0,
       two = 0
 
     function fn() {
@@ -283,7 +279,7 @@ describe('Core specs', function() {
   })
 
   it('multi off', function() {
-    var fn = function() { counter++ }
+    const fn = function() { counter++ }
 
     el.on('foo', fn).on('bar', fn)
     el.off('foo bar', fn)

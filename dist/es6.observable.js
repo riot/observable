@@ -1,4 +1,4 @@
-var observable = function(el) {
+const observable = function(el) { // eslint-disable-line
 
   /**
    * Extend the original object or create a new empty one
@@ -10,8 +10,13 @@ var observable = function(el) {
   /**
    * Private variables
    */
-  var callbacks = {},
-    slice = Array.prototype.slice
+  const callbacks = new Map()
+  const ALL_CALLBACKS = '*'
+  const methodAttributes = {
+    enumerable: false,
+    writable: false,
+    configurable: false
+  }
 
   /**
    * Public Api
@@ -27,14 +32,16 @@ var observable = function(el) {
      * @returns { Object } el
      */
     on: {
-      value: function(event, fn) {
-        if (typeof fn == 'function')
-          (callbacks[event] = callbacks[event] || []).push(fn)
+      value(event, fn) {
+        if (callbacks.has(event)) {
+          callbacks.get(event).add(fn)
+        } else {
+          callbacks.set(event, new Set().add(fn))
+        }
+
         return el
       },
-      enumerable: false,
-      writable: false,
-      configurable: false
+      ...methodAttributes
     },
 
     /**
@@ -44,21 +51,22 @@ var observable = function(el) {
      * @returns { Object } el
      */
     off: {
-      value: function(event, fn) {
-        if (event == '*' && !fn) callbacks = {}
-        else {
+      value(event, fn) {
+        if (event === ALL_CALLBACKS && !fn) {
+          callbacks.clear()
+        } else {
           if (fn) {
-            var arr = callbacks[event]
-            for (var i = 0, cb; cb = arr && arr[i]; ++i) {
-              if (cb == fn) arr.splice(i--, 1)
+            const fns = callbacks.get(event)
+
+            if (fns) {
+              fns.delete(fn)
+              if (fns.size === 0) callbacks.delete(event)
             }
-          } else delete callbacks[event]
+          } else callbacks.delete(event)
         }
         return el
       },
-      enumerable: false,
-      writable: false,
-      configurable: false
+      ...methodAttributes
     },
 
     /**
@@ -69,16 +77,14 @@ var observable = function(el) {
      * @returns { Object } el
      */
     one: {
-      value: function(event, fn) {
-        function on() {
+      value(event, fn) {
+        function on(...args) {
           el.off(event, on)
-          fn.apply(el, arguments)
+          fn.apply(el, args)
         }
         return el.on(event, on)
       },
-      enumerable: false,
-      writable: false,
-      configurable: false
+      ...methodAttributes
     },
 
     /**
@@ -88,37 +94,21 @@ var observable = function(el) {
      * @returns { Object } el
      */
     trigger: {
-      value: function(event) {
+      value(event, ...args) {
+        const fns = callbacks.get(event)
 
-        // getting the arguments
-        var arglen = arguments.length - 1,
-          args = new Array(arglen),
-          fns,
-          fn,
-          i
+        if (fns) fns.forEach(fn => fn.apply(el, args))
 
-        for (i = 0; i < arglen; i++) {
-          args[i] = arguments[i + 1] // skip first argument
+        if (callbacks.get(ALL_CALLBACKS) && event !== ALL_CALLBACKS) {
+          el.trigger.apply(el, [ALL_CALLBACKS, event].concat(args))
         }
-
-        fns = slice.call(callbacks[event] || [], 0)
-
-        for (i = 0; fn = fns[i]; ++i) {
-          fn.apply(el, args)
-        }
-
-        if (callbacks['*'] && event != '*')
-          el.trigger.apply(el, ['*', event].concat(args))
 
         return el
       },
-      enumerable: false,
-      writable: false,
-      configurable: false
+      ...methodAttributes
     }
   })
 
   return el
-
 }
 export default observable
