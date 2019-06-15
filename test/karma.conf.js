@@ -1,5 +1,6 @@
-module.exports = function(config) {
+process.env.BABEL_ENV= 'test'
 
+module.exports = function(config) {
   config.set({
     basePath: '',
     autoWatch: true,
@@ -7,7 +8,8 @@ module.exports = function(config) {
     plugins: [
       'karma-mocha',
       'karma-coverage',
-      'karma-chrome-launcher'
+      'karma-chrome-launcher',
+      'karma-babel-preprocessor'
     ],
     files: [
       '../node_modules/expect.js/index.js',
@@ -22,11 +24,18 @@ module.exports = function(config) {
       }
     },
 
+    babelPreprocessor: {
+      options: {
+        configFile: true,
+        sourceMap: 'inline'
+      }
+    },
+
     browsers: ['ChromeHeadlessNoSandbox'],
 
     reporters: ['progress', 'coverage'],
     preprocessors: {
-      '../index.js': ['coverage']
+      '../dist/observable.js': ['babel']
     },
 
     coverageReporter: {

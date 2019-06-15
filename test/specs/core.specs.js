@@ -203,6 +203,27 @@ describe('Core specs', function() {
 
   })
 
+  it('remove all listeners of a specific event', function() {
+
+    function func() {
+      counter ++
+    }
+    function func2() {
+      counter ++
+    }
+
+    el
+      .on('foo', func)
+      .on('foo', func2)
+      .trigger('foo')
+      .off('foo')
+      .trigger('foo')
+      .trigger('foo')
+
+    expect(counter).to.be(2)
+
+  })
+
   it('listen all the events only once', function() {
 
     function func() {
