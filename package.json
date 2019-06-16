@@ -37,7 +37,7 @@
     "mocha": "^6.1.4",
     "phantomjs-prebuilt": "^2.1.16"
   },
-  "author": "Muut, Inc. and other contributors",
+  "author": "Gianluca Guarini <gianluca.guarini@gmail.com> (http://gianlucaguarini.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/riot/observable/issues"
