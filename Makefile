@@ -8,18 +8,28 @@ COVERALLS = ./node_modules/coveralls/bin/coveralls.js
 
 build:
 	# building
+	@ node_modules/.bin/tsc
 	@ mkdir -p dist
 	# umd
-	@ cat lib/wrap/start.frag lib/index.js lib/wrap/end.frag > dist/observable.js
-	@ cat lib/index.js > dist/es6.observable.js
+	@ cat lib/wrap/start.frag lib/index.js lib/wrap/end.frag | \
+	  sed '/export\sdefault/d' | \
+	  sed '/sourceMappingURL/d' | \
+	  tee dist/observable.js 1> /dev/null
 	# es6
-	@ echo 'export default observable' >> dist/es6.observable.js
+	@ cat lib/index.js | \
+	  sed '/sourceMappingURL/d' | \
+	  tee dist/es6.observable.js 1> /dev/null
+	# types
+	@ mv lib/index.d.ts dist
+	# cleanup
+	@ node_modules/.bin/eslint --fix dist
+	@ rm lib/index.js*
 
 test: eslint test-karma
 
 eslint:
 	# check code style
-	@ $(ESLINT) -c ./.eslintrc lib test/specs
+	@ $(ESLINT) -c ./.eslintrc test/specs
 
 test-karma:
 	@ $(KARMA) start test/karma.conf.js
