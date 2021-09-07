@@ -1,4 +1,4 @@
-interface ListenerCallback<T extends any, Callback = (args: T[]) => void> {
+interface ListenerCallback<T extends any, Callback = (...args: T[]) => void> {
     (event: string, fn: Callback): ObservableInstance<T>
 }
 
