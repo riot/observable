@@ -4,6 +4,7 @@
   "description": "Simple script to send and receive events",
   "main": "dist/observable.js",
   "jsnext:main": "dist/es6.observable.js",
+  "types": "types.d.ts",
   "directories": {
     "lib": "lib"
   },
