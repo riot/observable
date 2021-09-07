@@ -12,19 +12,24 @@ const on = (callbacks, el) => (event, fn) => {
   return el
 }
 
+const deleteCallback = (callbacks, el, event,  fn) => {
+  if (fn) {
+    const fns = callbacks.get(event)
+
+    if (fns) {
+      fns.delete(fn)
+      if (fns.size === 0) callbacks.delete(event)
+    }
+  } else callbacks.delete(event)
+}
+
 const off = (callbacks, el) => (event, fn) => {
   if (event === ALL_CALLBACKS && !fn) {
     callbacks.clear()
   } else {
-    if (fn) {
-      const fns = callbacks.get(event)
-
-      if (fns) {
-        fns.delete(fn)
-        if (fns.size === 0) callbacks.delete(event)
-      }
-    } else callbacks.delete(event)
+    deleteCallback(callbacks, el, event, fn)
   }
+
   return el
 }
 
