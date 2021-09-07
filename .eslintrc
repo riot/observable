@@ -11,6 +11,6 @@ globals:
   observable: true
 
 rules:
-  fp/no-mutating-methods: false
-  fp/no-rest-parameters: false
-  fp/no-proxy: false
+  fp/no-mutating-methods: 'off'
+  fp/no-rest-parameters: 'off'
+  fp/no-proxy: 'off'

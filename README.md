@@ -1,4 +1,4 @@
-[![Build Status][travis-image]][travis-url]
+[![Build Status][ci-image]][ci-url]
 [![Code Quality][codeclimate-image]][codeclimate-url]
 [![NPM version][npm-version-image]][npm-url]
 [![NPM downloads][npm-downloads-image]][npm-url]
@@ -31,8 +31,8 @@ Once the core and events are carefully designed the team members are enabled to 
 
 `$ bower install @riotjs/observable --save`
 
-[travis-image]:https://img.shields.io/travis/riot/observable.svg?style=flat-square
-[travis-url]:https://travis-ci.org/riot/observable
+[ci-image]:https://img.shields.io/github/workflow/status/riot/observable/test?style=flat-square
+[ci-url]:https://github.com/riot/observable/actions
 
 [license-image]:http://img.shields.io/badge/license-MIT-000000.svg?style=flat-square
 [license-url]:LICENSE.txt
@@ -41,8 +41,8 @@ Once the core and events are carefully designed the team members are enabled to 
 [npm-downloads-image]:http://img.shields.io/npm/dm/@riotjs/observable.svg?style=flat-square
 [npm-url]:https://npmjs.org/package/@riotjs/observable
 
-[coverage-image]:https://img.shields.io/coveralls/riot/observable/master.svg?style=flat-square
-[coverage-url]:https://coveralls.io/r/riot/observable/?branch=master
+[coverage-image]:https://img.shields.io/coveralls/riot/observable/main.svg?style=flat-square
+[coverage-url]:https://coveralls.io/r/riot/observable/?branch=main
 
 [codeclimate-image]:https://api.codeclimate.com/v1/badges/d1403f06d0e9467985e3/maintainability
 [codeclimate-url]:https://codeclimate.com/github/riot/observable
