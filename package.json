@@ -1,6 +1,6 @@
 {
   "name": "@riotjs/observable",
-  "version": "4.0.4",
+  "version": "4.1.0",
   "description": "Simple script to listen and dispatch events",
   "main": "dist/observable.js",
   "jsnext:main": "dist/es6.observable.js",
