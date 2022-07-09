@@ -1,3 +1,7 @@
+# Observable
+
+[![Riot.js observable logo](https://raw.githubusercontent.com/riot/branding/main/observable/observable-horizontal.svg)](https://github.com/riot/observable/)
+
 [![Build Status][ci-image]][ci-url]
 [![Code Quality][codeclimate-image]][codeclimate-url]
 [![NPM version][npm-version-image]][npm-url]
@@ -5,7 +9,7 @@
 [![MIT License][license-image]][license-url]
 [![Coverage Status][coverage-image]][coverage-url]
 
-# Observable
+
 
 Observable is a generic tool to send and receive events. It's a common pattern to isolate modules without forming a dependency or "coupling". By using events a large program can be broken into smaller and simpler units. Modules can be added, removed, or modified without affecting the other parts of the application.
 
