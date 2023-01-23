@@ -35,7 +35,7 @@ Once the core and events are carefully designed the team members are enabled to 
 
 `$ bower install @riotjs/observable --save`
 
-[ci-image]:https://img.shields.io/github/workflow/status/riot/observable/test?style=flat-square
+[ci-image]:https://img.shields.io/github/actions/workflow/status/riot/observable/test.yml?style=flat-square
 [ci-url]:https://github.com/riot/observable/actions
 
 [license-image]:http://img.shields.io/badge/license-MIT-000000.svg?style=flat-square
